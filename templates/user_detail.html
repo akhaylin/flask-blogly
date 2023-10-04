@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %} {{ user.first_name }}  {{user.last_name}} {% endblock %}
+{% block content %}
+<div>
+  <img src="{{ user.img }}" width="500" height="600">
+  <button formaction="/user/{{ user.id }}/edit">Edit</button>
+  <button formaction="/user/{{ user.id }}/delete" formmethod="POST">Delete</button>
+</div>
+{% endblock %}
