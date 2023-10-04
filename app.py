@@ -13,3 +13,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
+
+
+@app.get('/')
+def home():
+    return redirect('/users')
+
+@app.get('/users')
+def list_users():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
