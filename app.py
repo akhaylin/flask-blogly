@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, request, redirect, render_template, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User
+from models import connect_db, db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -81,7 +81,7 @@ def update_user(user_id):
     """Handles edit profile form submission, edits user information in database
         redirects to users page after completing edit
     """
-    
+
     user = User.query.get_or_404(user_id)
 
     if request.form["first_name"]:
@@ -107,6 +107,47 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.get('/users/<int:user_id>/posts/new')
+def show_new_post_form(user_id):
+    """Shows the new post form when user clicks add post"""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('new_post.html', user=user)
+
+
+@app.post('/users/<int:user_id>/posts/new')
+def add_post(user_id):
+    title = request.form["title"]
+    content = request.form["content"]
+
+    post = Post(title=title, content=content, user_id=user_id )
+    db.session.add(post)
+    db.session.commit()
+    flash("Post added successfully!", "success")
+
+    return redirect(f"/users/{user_id}")
+
+
+@app.get('/posts/<int:post_id>')
+def show_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = post.user
+
+    return render_template('post_detail.html', post=post, user=user)
+
+
+@app.get('/posts/<int:post_id>/edit')
+def show_edit_post_form(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    return render_template('post_edit.html', post=post)
+
+
+
+
 
 
 

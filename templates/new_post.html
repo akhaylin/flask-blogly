@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Create a user {% endblock %}
+{% block content %}
+<h1>Add Post for {{ user.first_name }} {{ user.last_name }}</h1>
+<form action="/users/{{ user.id }}/posts/new" method="POST">
+  <div>
+    <label for="title" >Title:</label>
+    <input id="title" name="title">
+  </div>
+  <div>
+    <label for="content">Content:</label>
+    <textarea class="form-control" id="content" name ="content" rows="3"></textarea>
+  </div>
+    <a href="/users/{{ user.id }}" class="btn btn-primary mt-3">Cancel</a>
+    <button type="submit" class="btn btn-primary mt-3" >Add</button>
+</form>
+{% endblock %}

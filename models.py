@@ -52,7 +52,7 @@ class Post(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        Default=db.func.now(),
+        default=db.func.now(),
         nullable=False
     )
 

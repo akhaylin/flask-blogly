@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} Create a user {% endblock %}
 {% block content %}
+<h1>Create a new User:</h1>
 <form action="/users/new" method="POST">
   <div>
     <label for="first_name" >First Name:</label>
     <input id="first_name" name="first_name">
   </div>
-  <p>Last Name:  <input name="last_name"></p>
-  <p>Image URL:   <input name="image_url"></p>
-  <button type="submit" class="btn btn-primary mt-3" >Add</button>
+  <div>
+    <label for="last_name">Last Name:</label>
+    <input id="last_name" name="last_name">
+  </div>
+  <div>
+    <label for="image_url">Image URL:</label>
+    <input id="image_url" name="image_url">
+  </div>
+    <button type="submit" class="btn btn-primary mt-3" >Add</button>
 </form>
 {% endblock %}
-<!--Add label for each input-->
-<!--TODO:SEXYLICIOUSIFY-->
