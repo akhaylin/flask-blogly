@@ -85,12 +85,12 @@ class UserViewTestCase(TestCase):
         """Test to see if user gets deleted from db and does not appear on users
             page
         """
-        ##TODO:More appropriate to delete the user in the setUp()
+
         with app.test_client() as c:
-            resp = c.post(f"/users/2/delete", follow_redirects=True)
+            resp = c.post(f"/users/1/delete", follow_redirects=True)
             html = resp.get_data(as_text=True)
-            self.assertNotIn("Joe", html)
-            self.assertNotIn("Musk", html)
+            self.assertNotIn("test1_first", html)
+            self.assertNotIn("test1_last", html)
 
 
 
