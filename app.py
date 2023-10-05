@@ -102,6 +102,10 @@ def delete_user(user_id):
     """Deletes a user from the database then returns to users page"""
 
     user = User.query.get_or_404(user_id)
+    posts = user.posts
+
+    for post in posts:
+        db.session.delete(post)
 
     db.session.delete(user)
     db.session.commit()
@@ -145,10 +149,31 @@ def show_edit_post_form(post_id):
 
     return render_template('post_edit.html', post=post)
 
+@app.post('/posts/<int:post_id>/edit')
+def edit_post(post_id):
 
+    post = Post.query.get_or_404(post_id)
 
+    if request.form["title"]:
+        post.title = request.form["title"]
+    if request.form["content"]:
+        post.content = request.form["content"]
 
+    db.session.commit()
+    flash('Updated post successfully', 'success')
 
+    return redirect(f'/posts/{post_id}')
+
+@app.post('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    """Deletes a post and redirects to user profile page"""
+
+    post = Post.query.get_or_404(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{post.user_id}')
 
 
 
