@@ -2,8 +2,16 @@
 {% block title %} {{ user.first_name }}  {{user.last_name}} {% endblock %}
 {% block content %}
 <div>
-  <img src="{{ user.img }}" width="500" height="600">
-  <button formaction="/user/{{ user.id }}/edit">Edit</button>
-  <button formaction="/user/{{ user.id }}/delete" formmethod="POST">Delete</button>
+  <img src="{{ user.image_url }}" width="100" height="200">
+  <!-- <form action="/users/{{ user.id }}/edit">
+    <button type="submit" class="btn btn-primary mt-3">Edit</button>
+  </form> -->
+  <!-- <form action="/users/{{ user.id }}/delete" method="POST">
+    <button class="btn btn-primary mt-3">Delete</button>
+  </form> -->
+  <form>
+    <button formaction="/users/{{ user.id }}/edit" formmethod="GET" type="submit" class="btn btn-primary mt-3">Edit</button>
+    <button formaction="/users/{{ user.id }}/delete" formmethod="POST" class="btn btn-primary mt-3">Delete</button>
+  </form>
 </div>
 {% endblock %}

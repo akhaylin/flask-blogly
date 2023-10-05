@@ -52,9 +52,50 @@ class UserViewTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """Tests to see if users are displayed on page"""
+
         with app.test_client() as c:
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+
+    def test_show_user(self):
+        """Test if user profile displays the users information"""
+
+        with app.test_client() as c:
+            resp = c.get(f"/users/{self.user_id}", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test1_first", html)
+            self.assertIn("test1_last", html)
+
+    def test_add_user(self):
+        """Test to see if user gets added to db and is displayed on page"""
+
+        with app.test_client() as c:
+            data = {"first_name": "Joe", "last_name": "Musk", "image_url": "jpeg"}
+            resp = c.post('/users/new',data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+            self.assertIn("Joe", html)
+            self.assertIn("Musk", html)
+
+    def test_delete_user(self):
+        """Test to see if user gets deleted from db and does not appear on users
+            page
+        """
+        ##TODO:More appropriate to delete the user in the setUp()
+        with app.test_client() as c:
+            resp = c.post(f"/users/2/delete", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+            self.assertNotIn("Joe", html)
+            self.assertNotIn("Musk", html)
+
+
+
+
+
+
+
+
