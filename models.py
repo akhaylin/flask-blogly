@@ -31,6 +31,7 @@ class User(db.Model):
     image_url = db.Column(
         db.Text
     )
+    # posts = db.relationship('Post', backref='users') IF relationship was in this class it would look liek this
 
 class Post(db.Model):
     """Posts class"""
@@ -55,7 +56,7 @@ class Post(db.Model):
         default=db.func.now(),
         nullable=False
     )
-
+##TODO:make foerign key not nullable
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id')

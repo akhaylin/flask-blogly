@@ -124,12 +124,17 @@ def show_new_post_form(user_id):
 
 @app.post('/users/<int:user_id>/posts/new')
 def add_post(user_id):
+    """Handle add post form submission, add post instance to db then redirect
+        back to user profile page
+    """
     title = request.form["title"]
     content = request.form["content"]
 
     post = Post(title=title, content=content, user_id=user_id )
+
     db.session.add(post)
     db.session.commit()
+
     flash("Post added successfully!", "success")
 
     return redirect(f"/users/{user_id}")
@@ -137,6 +142,8 @@ def add_post(user_id):
 
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
+    """Show detailed view of post"""
+    ##TODO: Use backref to access first/last name post.user.first_name etc in html
     post = Post.query.get_or_404(post_id)
     user = post.user
 
@@ -145,12 +152,18 @@ def show_post(post_id):
 
 @app.get('/posts/<int:post_id>/edit')
 def show_edit_post_form(post_id):
+    """Render the edit post form"""
+
     post = Post.query.get_or_404(post_id)
 
     return render_template('post_edit.html', post=post)
 
+
 @app.post('/posts/<int:post_id>/edit')
 def edit_post(post_id):
+    """Handles edit post form submission, updates the post in db then redirect
+        to user profile page
+    """
 
     post = Post.query.get_or_404(post_id)
 
@@ -163,6 +176,7 @@ def edit_post(post_id):
     flash('Updated post successfully', 'success')
 
     return redirect(f'/posts/{post_id}')
+
 
 @app.post('/posts/<int:post_id>/delete')
 def delete_post(post_id):
